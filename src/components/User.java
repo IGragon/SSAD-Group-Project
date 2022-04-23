@@ -4,6 +4,7 @@ import modules.GPS;
 import modules.GSM;
 import modules.Sensor;
 import modules.SoundMeter;
+import utils.Condition;
 import utils.Coordinates;
 import utils.Data;
 
@@ -13,7 +14,7 @@ public class User extends Component {
     private GPS gps;
     private GSM gsm;
     private Data personalData;
-    boolean isOk;
+    Condition condition;
 
     @Override
     public Coordinates getCoordinates() {
@@ -24,8 +25,8 @@ public class User extends Component {
         return (Boolean) sensor.getData().get("isAccident");
     }
 
-    public void changeCondition(boolean newCondition) {
-        this.isOk = newCondition;
+    public void changeCondition(Condition condition) {
+        this.condition = condition;
     }
 
     public void notifyByGsm(Component organization) {

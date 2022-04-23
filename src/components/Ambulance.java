@@ -5,23 +5,32 @@ import utils.Data;
 
 public class Ambulance extends Component {
     int patientId;
+    int hospitalDestinationId;
     Data patientData;
-    Coordinates location;
-    Hospital hospitalDestination;
+    Coordinates patientLocation;
 
-    public void setHospitalDestination(Hospital hospitalDestination) {
-        this.hospitalDestination = hospitalDestination;
+    public void setHospitalDestination(int hospitalDestinationId) {
+        this.hospitalDestinationId = hospitalDestinationId;
     }
 
     public void setPatient(int patient, Data patientData, Coordinates location){
         this.patientId = patient;
         this.patientData = patientData;
-        this.location = location;
+        this.patientLocation = location;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public int getHospitalDestinationId() {
+        return hospitalDestinationId;
     }
 
     public void removePatient(){
         this.patientId = -1;
+        this.hospitalDestinationId = -1;
         this.patientData = null;
-        this.location = null;
+        this.patientLocation = null;
     }
 }

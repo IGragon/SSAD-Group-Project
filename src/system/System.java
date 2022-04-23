@@ -14,8 +14,7 @@ public class System implements Mediator {
     public void send(Component sender, Event event, Data data) {
         if (sender.getType() == ComponentType.USER && event == Event.ACCIDENT){
             User senderU = (User) sender;
-            Data userData = senderU.collectAllData();
-
+            senderU.changeCondition(Condition.IN_ACCIDENT);
 
             Hospital closestHospital = hospitals.getClosest(senderU);
             Ambulance closestAmbulance = ambulances.getClosest(senderU);
@@ -27,14 +26,33 @@ public class System implements Mediator {
             senderU.notifyByGsm(closestPoliceStation);
 
 
-            closestHospital.addPatient((Integer) userData.get("id"), (Data) userData.get("personalData"));
+            closestHospital.addPatient((Integer) data.get("id"), (Data) data.get("personalData"));
             closestAmbulance.setPatient(
-                    (Integer) userData.get("id"),
-                    (Data) userData.get("personalData"),
-                    (Coordinates) userData.get("coordinates")
+                    (Integer) data.get("id"),
+                    (Data) data.get("personalData"),
+                    (Coordinates) data.get("coordinates")
             );
-            closestAmbulance.setHospitalDestination(closestHospital);
+            closestAmbulance.setHospitalDestination(closestHospital.getId());
+            closestPoliceStation.getAccidentLocation((Coordinates) data.get("coordinates"));
 
+        }else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_RESCUED){
+            Ambulance senderA = (Ambulance) sender;
+            User patient = users.get((Integer) data.get("id"));
+            patient.changeCondition(Condition.IN_AMBULANCE);
+        }
+        else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_DROPPED){
+            Ambulance senderA = (Ambulance) sender;
+            User patient = users.get((Integer) data.get("id"));
+            patient.changeCondition(Condition.DROPPED_TO_HOSPITAL);
+            senderA.removePatient();
+        }else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_ADMITTED){
+            Hospital senderH = (Hospital) sender;
+            User patient = users.get((Integer) data.get("id"));
+            patient.changeCondition(Condition.ADMITTED_TO_HOSPITAL);
+        }else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_DISCHARGED){
+            Hospital senderH = (Hospital) sender;
+            User patient = users.get((Integer) data.get("id"));
+            patient.changeCondition(Condition.OK);
         }
     }
 }
