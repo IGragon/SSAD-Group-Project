@@ -5,9 +5,14 @@ import utils.Data;
 
 public class Ambulance extends Component {
     int patientId;
+    int AttachedHospitalId;
     int hospitalDestinationId;
     Data patientData;
     Coordinates patientLocation;
+
+    public Ambulance(int attachedHospitalId) {
+        AttachedHospitalId = attachedHospitalId;
+    }
 
     public void setHospitalDestination(int hospitalDestinationId) {
         this.hospitalDestinationId = hospitalDestinationId;
