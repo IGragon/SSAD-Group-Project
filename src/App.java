@@ -4,6 +4,7 @@ import system.System;
 import utils.Coordinates;
 import utils.Data;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import static utils.Event.ACCIDENT;
@@ -14,7 +15,7 @@ import static system.SystemTypes.police.POLICE;
 
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
     // simulation of our project implementation
         System system = new System();
@@ -37,6 +38,12 @@ public class App {
         Data UserData = new Data();
 
         system.send(UnluckyUser, ACCIDENT, UserData);
+
+//        Thread EventTick = new Thread(() -> {
+//
+//        });
+//        EventTick.start();
+
 
     }
 }

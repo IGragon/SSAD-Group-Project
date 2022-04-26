@@ -6,6 +6,8 @@ import utils.Coordinates;
 import utils.Data;
 import utils.Event;
 
+import java.sql.*;
+import java.sql.Statement;
 import java.util.HashMap;
 
 
@@ -14,6 +16,27 @@ public class System implements Mediator {
     ComponentDatabase<Hospital> hospitalsDB = new ComponentDatabase<>();
     ComponentDatabase<Ambulance> ambulancesDB = new ComponentDatabase<>();
     ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
+
+
+
+    public System() throws SQLException, ClassNotFoundException {
+
+        String url = "jdbc:mysql://localhost:3306/ssad_group_project_db";
+        String user = "root";
+        String pass = "root";
+
+        try(Connection connection = DriverManager.getConnection(url, user, pass)){
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from users");
+            connection.close();
+        }
+
+        catch(Exception e){
+            throw e;
+        }
+    }
+
 
     @Override
     public void send(Component sender, Event event, Data data) {
