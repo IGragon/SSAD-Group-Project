@@ -67,21 +67,6 @@ public class System implements Mediator {
         }
     }
 
-
-//    public void addComponent(ComponentType T, int id, HashMap<Integer, Data> info_arr){
-//        switch (T){
-//
-//            case USER -> users.addComponent(id, new User());
-//
-//            case HOSPITAL -> hospitals.addComponent(id, new Hospital(info_arr));
-//
-//            case AMBULANCE -> ambulances.addComponent(id, new Ambulance());
-//
-//            case POLICE -> policeStations.addComponent(id, new PoliceStation());
-//        }
-//    }
-
-
     public void addComponent(SystemTypes.user type, int id){
             users.addComponent(id, new User());
     }
