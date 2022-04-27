@@ -2,16 +2,16 @@ package components;
 
 import utils.Coordinates;
 import utils.Data;
-
 import java.util.HashMap;
 
+// Hospital
 public class Hospital extends Component implements AccidentNotifiable {
     HashMap<Integer, Data> users;
-    Coordinates SelfCoord;
 
-    public Hospital(HashMap<Integer, Data> users, Coordinates SelfCoord) {
+    public Hospital(int id, HashMap<Integer, Data> users, Coordinates coordinates) {
+        this.id = id;
         this.users = users;
-        this.SelfCoord = SelfCoord;
+        this.coordinates = coordinates;
     }
 
     public void addPatient(int patientId, Data patientData) {

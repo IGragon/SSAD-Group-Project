@@ -16,6 +16,15 @@ public class User extends Component {
     private Data personalData;
     Condition condition;
 
+    public User(int id) {
+        sensor = new Sensor();
+        soundMeter = new SoundMeter();
+        gps = new GPS();
+        gsm = new GSM();
+        personalData = new Data();
+        condition = Condition.OK;
+    }
+
     @Override
     public Coordinates getCoordinates() {
         return (Coordinates) gps.getData().get("coordinates");
@@ -29,7 +38,7 @@ public class User extends Component {
         this.condition = condition;
     }
 
-    public void notifyByGsm(Component organization) {
+    public void notifyByGsm(AccidentNotifiable organization) {
         gsm.notifyOrganization(organization);
     }
 

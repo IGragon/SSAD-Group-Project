@@ -12,12 +12,12 @@ import java.util.HashMap;
 
 public class System implements Mediator {
 
-    boolean UsingDB;
-    Connection connection;
-    ComponentDatabase<User> usersDB = new ComponentDatabase<>();
-    ComponentDatabase<Hospital> hospitalsDB = new ComponentDatabase<>();
-    ComponentDatabase<Ambulance> ambulancesDB = new ComponentDatabase<>();
-    ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
+    private boolean UsingDB;
+    private Connection connection;
+    private ComponentDatabase<User> usersDB = new ComponentDatabase<>();
+    private ComponentDatabase<Hospital> hospitalsDB = new ComponentDatabase<>();
+    private ComponentDatabase<Ambulance> ambulancesDB = new ComponentDatabase<>();
+    private ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
 
 
     /*
@@ -125,7 +125,7 @@ public class System implements Mediator {
         to add different type Components to the system
     */
     public void addComponent(SystemTypes.user type, int id) throws SQLException {
-        usersDB.addComponent(id, new User());
+        usersDB.addComponent(id, new User(id));
 
         if (UsingDB) {
             ExecuteDB(String.format("INSERT INTO users(id, data) " +
@@ -134,7 +134,7 @@ public class System implements Mediator {
     }
 
     public void addComponent(SystemTypes.hospital type, int id, HashMap<Integer, Data> UserArr, Coordinates SelfCoord) throws SQLException {
-        hospitalsDB.addComponent(id, new Hospital(UserArr, SelfCoord));
+        hospitalsDB.addComponent(id, new Hospital(id, UserArr, SelfCoord));
 
         if (UsingDB) {
             ExecuteDB(String.format("INSERT INTO hospitals(id, data) " +
@@ -143,7 +143,7 @@ public class System implements Mediator {
     }
 
     public void addComponent(SystemTypes.ambulance type, int id, int AttachedHospitalId) throws SQLException {
-        ambulancesDB.addComponent(id, new Ambulance(AttachedHospitalId));
+        ambulancesDB.addComponent(id, new Ambulance(id, AttachedHospitalId));
 
         if (UsingDB) {
             ExecuteDB(String.format("INSERT INTO ambulances(id, data) " +
@@ -152,7 +152,7 @@ public class System implements Mediator {
     }
 
     public void addComponent(SystemTypes.police type, int id, Coordinates SelfCoord) throws SQLException {
-        policeStationsDB.addComponent(id, new PoliceStation(SelfCoord));
+        policeStationsDB.addComponent(id, new PoliceStation(id, SelfCoord));
 
         if (UsingDB) {
             ExecuteDB(String.format("INSERT INTO polices(id, data) " +

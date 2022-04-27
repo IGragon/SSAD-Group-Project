@@ -3,14 +3,15 @@ package components;
 import utils.Coordinates;
 import utils.Data;
 
-public class Ambulance extends Component {
+public class Ambulance extends Component implements AccidentNotifiable {
     int patientId;
     int AttachedHospitalId;
     int hospitalDestinationId;
     Data patientData;
     Coordinates patientLocation;
 
-    public Ambulance(int attachedHospitalId) {
+    public Ambulance(int id, int attachedHospitalId) {
+        this.id = id;
         AttachedHospitalId = attachedHospitalId;
     }
 
@@ -37,5 +38,10 @@ public class Ambulance extends Component {
         this.hospitalDestinationId = -1;
         this.patientData = null;
         this.patientLocation = null;
+    }
+
+    @Override
+    public void getAccidentNotification() {
+        // prepare the car and start moving towards the accident location
     }
 }

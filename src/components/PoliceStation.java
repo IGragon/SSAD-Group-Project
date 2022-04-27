@@ -3,10 +3,10 @@ package components;
 import utils.Coordinates;
 
 public class PoliceStation extends Component implements AccidentNotifiable {
-    Coordinates SelfCoord;
 
-    public PoliceStation(Coordinates SelfCoord) {
-        this.SelfCoord = SelfCoord;
+    public PoliceStation(int id, Coordinates coordinates) {
+        this.id = id;
+        this.coordinates = coordinates;
     }
 
 

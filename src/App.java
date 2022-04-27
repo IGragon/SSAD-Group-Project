@@ -32,10 +32,9 @@ public class App {
 
 
     // Test accident case
-        Component UnluckyUser = new User();
-        Data UserData = new Data();
-
-        system.send(UnluckyUser, ACCIDENT, UserData);
+        User UnluckyUser = new User(123);
+        if (UnluckyUser.isAccident())
+            system.send(UnluckyUser, ACCIDENT, UnluckyUser.collectAllData());
 
     }
 }
