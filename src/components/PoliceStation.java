@@ -3,10 +3,15 @@ package components;
 import utils.Coordinates;
 
 public class PoliceStation extends Component implements AccidentNotifiable{
+    Coordinates SelfCoord;
+
+    public PoliceStation(Coordinates SelfCoord) {
+        this.SelfCoord = SelfCoord;
+    }
 
 
     public void getAccidentLocation(Coordinates coordinates){
-        // do something with this information
+        // Do something with this information
         sendPatrol();
     }
 
@@ -16,9 +21,9 @@ public class PoliceStation extends Component implements AccidentNotifiable{
     }
 
     private void preparePatrol(){
-        // prepare traffic police patrol
+        // Prepare traffic police patrol
     }
     private void sendPatrol(){
-        // sending traffic police patrol
+        // Sending traffic police patrol
     }
 }
