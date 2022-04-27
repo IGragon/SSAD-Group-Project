@@ -14,19 +14,20 @@ public class Hospital extends Component implements AccidentNotifiable {
         this.SelfCoord = SelfCoord;
     }
 
-    public void addPatient(int patientId, Data patientData){
+    public void addPatient(int patientId, Data patientData) {
         users.put(patientId, patientData);
     }
 
     @Override
-    public void getAccidentNotification(){
+    public void getAccidentNotification() {
         prepareForPatient();
     }
 
-    public void updatePatientData(){
-        // Get the newest patient data
+    public void removePatient(int patientId) {
+        users.remove(patientId);
     }
-    private void prepareForPatient(){
+
+    private void prepareForPatient() {
         // Make some preparations
     }
 }

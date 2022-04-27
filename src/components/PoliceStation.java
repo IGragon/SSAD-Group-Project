@@ -2,7 +2,7 @@ package components;
 
 import utils.Coordinates;
 
-public class PoliceStation extends Component implements AccidentNotifiable{
+public class PoliceStation extends Component implements AccidentNotifiable {
     Coordinates SelfCoord;
 
     public PoliceStation(Coordinates SelfCoord) {
@@ -10,20 +10,21 @@ public class PoliceStation extends Component implements AccidentNotifiable{
     }
 
 
-    public void getAccidentLocation(Coordinates coordinates){
+    public void getAccidentLocation(Coordinates coordinates) {
         // Do something with this information
         sendPatrol();
     }
 
     @Override
-    public void getAccidentNotification(){
+    public void getAccidentNotification() {
         preparePatrol();
     }
 
-    private void preparePatrol(){
+    private void preparePatrol() {
         // Prepare traffic police patrol
     }
-    private void sendPatrol(){
+
+    private void sendPatrol() {
         // Sending traffic police patrol
     }
 }

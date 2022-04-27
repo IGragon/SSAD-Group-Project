@@ -21,7 +21,7 @@ public class User extends Component {
         return (Coordinates) gps.getData().get("coordinates");
     }
 
-    public boolean isAccident(){
+    public boolean isAccident() {
         return (Boolean) sensor.getData().get("isAccident");
     }
 

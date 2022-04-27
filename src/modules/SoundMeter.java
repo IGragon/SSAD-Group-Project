@@ -2,7 +2,7 @@ package modules;
 
 import utils.Data;
 
-public class SoundMeter implements Module{
+public class SoundMeter implements Module {
     @Override
     public Data getData() {
         Data data = new Data();
@@ -10,11 +10,11 @@ public class SoundMeter implements Module{
         return null;
     }
 
-    void enableAlarm(){
+    void enableAlarm() {
 
     }
 
-    void disableAlarm(){
+    void disableAlarm() {
 
     }
 }

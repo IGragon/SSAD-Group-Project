@@ -1,7 +1,8 @@
 package modules;
+
 import utils.Data;
 
-public class Sensor implements Module{
+public class Sensor implements Module {
     @Override
     public Data getData() {
         // Sensor senses the accident

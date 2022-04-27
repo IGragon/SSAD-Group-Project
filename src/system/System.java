@@ -20,10 +20,10 @@ public class System implements Mediator {
     ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
 
 
-/*
-    This constructor is used only
-   when you want to connect to DB
-*/
+    /*
+        This constructor is used only
+       when you want to connect to DB
+    */
     public System(String url, String user, String pass) throws Exception {
         UsingDB = true;
 
@@ -39,31 +39,29 @@ public class System implements Mediator {
 //          ----Some Parsing Algorithm----
 
             connection.close();
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
-/*
-    This constructor is used in
-   default case
-*/
+    /*
+        This constructor is used in
+       default case
+    */
     public System() {
         UsingDB = false;
     }
 
 
-/*
-     Send() method provides connection
-    between components by using mediator
-    concept
-*/
+    /*
+         Send() method provides connection
+        between components by using mediator
+        concept
+    */
     @Override
     public void send(Component sender, Event event, Data data) {
 
-        if (sender.getType() == ComponentType.USER && event == Event.ACCIDENT){
+        if (sender.getType() == ComponentType.USER && event == Event.ACCIDENT) {
             User senderU = (User) sender;
             senderU.changeCondition(Condition.IN_ACCIDENT);
 
@@ -84,40 +82,37 @@ public class System implements Mediator {
             );
             closestAmbulance.setHospitalDestination(closestHospital.getId());
             closestPoliceStation.getAccidentLocation((Coordinates) data.get("coordinates"));
-        }
 
-        else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_RESCUED){
+        } else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_RESCUED) {
             Ambulance senderA = (Ambulance) sender;
             User patient = usersDB.getId((Integer) data.get("id"));
             patient.changeCondition(Condition.IN_AMBULANCE);
-        }
 
-        else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_DROPPED){
+        } else if (sender.getType() == ComponentType.AMBULANCE && event == Event.PATIENT_DROPPED) {
             Ambulance senderA = (Ambulance) sender;
             User patient = usersDB.getId((Integer) data.get("id"));
             patient.changeCondition(Condition.DROPPED_TO_HOSPITAL);
             senderA.removePatient();
-        }
 
-        else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_ADMITTED){
+        } else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_ADMITTED) {
             Hospital senderH = (Hospital) sender;
             User patient = usersDB.getId((Integer) data.get("id"));
             patient.changeCondition(Condition.ADMITTED_TO_HOSPITAL);
-        }
 
-        else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_DISCHARGED){
+        } else if (sender.getType() == ComponentType.HOSPITAL && event == Event.PATIENT_DISCHARGED) {
             Hospital senderH = (Hospital) sender;
             User patient = usersDB.getId((Integer) data.get("id"));
             patient.changeCondition(Condition.OK);
+            senderH.removePatient(patient.getId());
         }
     }
 
 
-/*
-     This function is used to execute database
-    commands with interrupted
-    connection (for not overloading DB).
-*/
+    /*
+         This function is used to execute database
+        commands with interrupted
+        connection (for not overloading DB).
+    */
     private ResultSet ExecuteDB(String command) throws SQLException {
         Statement DBstatement = connection.createStatement();
         ResultSet result = DBstatement.executeQuery(command);
@@ -125,43 +120,43 @@ public class System implements Mediator {
         return result;
     }
 
-/*
-    Here are multiple constructor variants
-    to add different type Components to the system
-*/
+    /*
+        Here are multiple constructor variants
+        to add different type Components to the system
+    */
     public void addComponent(SystemTypes.user type, int id) throws SQLException {
-            usersDB.addComponent(id, new User());
+        usersDB.addComponent(id, new User());
 
-            if (UsingDB) {
-                ExecuteDB(String.format("INSERT INTO users(id, data) " +
-                                        "VALUES(%d, %s)", id, "some_user_data"));
-            }
+        if (UsingDB) {
+            ExecuteDB(String.format("INSERT INTO users(id, data) " +
+                    "VALUES(%d, %s)", id, "some_user_data"));
+        }
     }
 
     public void addComponent(SystemTypes.hospital type, int id, HashMap<Integer, Data> UserArr, Coordinates SelfCoord) throws SQLException {
-            hospitalsDB.addComponent(id, new Hospital(UserArr, SelfCoord));
+        hospitalsDB.addComponent(id, new Hospital(UserArr, SelfCoord));
 
-            if (UsingDB) {
-                ExecuteDB(String.format("INSERT INTO hospitals(id, data) " +
-                                        "VALUES(%d, %s)", id, "some_hospital_data"));
-            }
+        if (UsingDB) {
+            ExecuteDB(String.format("INSERT INTO hospitals(id, data) " +
+                    "VALUES(%d, %s)", id, "some_hospital_data"));
+        }
     }
 
     public void addComponent(SystemTypes.ambulance type, int id, int AttachedHospitalId) throws SQLException {
-            ambulancesDB.addComponent(id, new Ambulance(AttachedHospitalId));
+        ambulancesDB.addComponent(id, new Ambulance(AttachedHospitalId));
 
-                if (UsingDB) {
-                    ExecuteDB(String.format("INSERT INTO ambulances(id, data) " +
-                                            "VALUES(%d, %s)", id, "some_ambulance_data"));
-                }
+        if (UsingDB) {
+            ExecuteDB(String.format("INSERT INTO ambulances(id, data) " +
+                    "VALUES(%d, %s)", id, "some_ambulance_data"));
+        }
     }
 
     public void addComponent(SystemTypes.police type, int id, Coordinates SelfCoord) throws SQLException {
-            policeStationsDB.addComponent(id, new PoliceStation(SelfCoord));
+        policeStationsDB.addComponent(id, new PoliceStation(SelfCoord));
 
-            if (UsingDB) {
-                ExecuteDB(String.format("INSERT INTO polices(id, data) " +
-                                        "VALUES(%d, %s)", id, "some_police_data"));
-            }
+        if (UsingDB) {
+            ExecuteDB(String.format("INSERT INTO polices(id, data) " +
+                    "VALUES(%d, %s)", id, "some_police_data"));
+        }
     }
 }

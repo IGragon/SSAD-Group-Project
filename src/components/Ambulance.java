@@ -18,7 +18,7 @@ public class Ambulance extends Component {
         this.hospitalDestinationId = hospitalDestinationId;
     }
 
-    public void setPatient(int patient, Data patientData, Coordinates location){
+    public void setPatient(int patient, Data patientData, Coordinates location) {
         this.patientId = patient;
         this.patientData = patientData;
         this.patientLocation = location;
@@ -32,7 +32,7 @@ public class Ambulance extends Component {
         return hospitalDestinationId;
     }
 
-    public void removePatient(){
+    public void removePatient() {
         this.patientId = -1;
         this.hospitalDestinationId = -1;
         this.patientData = null;

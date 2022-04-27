@@ -1,20 +1,24 @@
 
 package system;
+
 /*
   These types used to restrict the access
  for addComponent() method
 */
 public class SystemTypes {
-    public enum user{
+    public enum user {
         USER
     }
-    public enum ambulance{
+
+    public enum ambulance {
         AMBULANCE
     }
-    public enum police{
+
+    public enum police {
         POLICE
     }
-    public enum hospital{
+
+    public enum hospital {
         HOSPITAL
     }
 }
