@@ -22,15 +22,23 @@ public class System implements Mediator {
     ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
 
 
-//   This constructor is used only
-//   when you want to connect to DB
+/*
+    This constructor is used only
+   when you want to connect to DB
+*/
     public System(String url, String user, String pass) throws Exception {
         UsingDB = true;
 
         try(Connection connection = DriverManager.getConnection(url, user, pass)){
             Class.forName("com.mysql.jdbc.Driver");
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from users");
+            ResultSet UsersData = statement.executeQuery("select * from users");
+            ResultSet HospitalsData = statement.executeQuery("select * from hospitals");
+            ResultSet AmbulancesData = statement.executeQuery("select * from ambulances");
+            ResultSet PoliceData = statement.executeQuery("select * from polices");
+
+//          ----Some Parsing Algorithm----
+
             connection.close();
         }
 
@@ -39,29 +47,36 @@ public class System implements Mediator {
         }
     }
 
-//   This constructor is used in
-//   default case
+/*
+    This constructor is used in
+   default case
+*/
     public System() {
         UsingDB = false;
     }
 
 
+/*
+     Send() method provides connection
+    between components by using mediator
+    concept
+*/
     @Override
     public void send(Component sender, Event event, Data data) {
+
         if (sender.getType() == ComponentType.USER && event == Event.ACCIDENT){
             User senderU = (User) sender;
             senderU.changeCondition(Condition.IN_ACCIDENT);
 
+//            Find and send notifications to the closest components
             Hospital closestHospital = hospitalsDB.getClosest(senderU);
             Ambulance closestAmbulance = ambulancesDB.getClosest(senderU);
             PoliceStation closestPoliceStation = policeStationsDB.getClosest(senderU);
-
-
             senderU.notifyByGsm(closestHospital);
             senderU.notifyByGsm(closestAmbulance);
             senderU.notifyByGsm(closestPoliceStation);
 
-
+//            Plan and execute tasks for all the components
             closestHospital.addPatient((Integer) data.get("id"), (Data) data.get("personalData"));
             closestAmbulance.setPatient(
                     (Integer) data.get("id"),
@@ -99,8 +114,10 @@ public class System implements Mediator {
     }
 
 
-//    Here are multiple constructor variants
-//    to add different type Components to the system
+/*
+    Here are multiple constructor variants
+    to add different type Components to the system
+*/
     public void addComponent(SystemTypes.user type, int id){
             usersDB.addComponent(id, new User());
     }

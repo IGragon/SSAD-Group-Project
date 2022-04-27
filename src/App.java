@@ -16,16 +16,15 @@ import static utils.Event.ACCIDENT;
 public class App {
     public static void main(String[] args) throws Exception {
 
-    // simulation of our project implementation
-//        System system = new System();
+    // Simulation of our project implementation
+        System system = new System();
+//        System system = new System(
+//                "jdbc:mysql://localhost:3306/ssad_group_project_db",
+//                "root",
+//                "root");
 
-        System system = new System(
-                "jdbc:mysql://localhost:3306/ssad_group_project_db",
-                "root",
-                "root");
 
-
-    // create test components (supposedly parsed from DB)
+    // Create test components (supposedly parsed from DB)
         // Test user array for hospital with only one user
         HashMap<Integer, Data>  HospitalBelongUsers = new HashMap<>();
         HospitalBelongUsers.put(100000, new Data());
@@ -37,7 +36,7 @@ public class App {
         system.addComponent(POLICE, 400000, new Coordinates());
 
 
-    // test accident case
+    // Test accident case
         Component UnluckyUser = new User();
         Data UserData = new Data();
 

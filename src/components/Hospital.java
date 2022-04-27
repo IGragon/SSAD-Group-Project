@@ -24,9 +24,9 @@ public class Hospital extends Component implements AccidentNotifiable {
     }
 
     public void updatePatientData(){
-
+        // Get the newest patient data
     }
     private void prepareForPatient(){
-        // make some preparations
+        // Make some preparations
     }
 }

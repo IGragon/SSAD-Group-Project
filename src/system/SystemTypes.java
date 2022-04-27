@@ -1,5 +1,9 @@
-package system;
 
+package system;
+/*
+  These types used to restrict the access
+ for addComponent() method
+*/
 public class SystemTypes {
     public enum user{
         USER
@@ -14,7 +18,6 @@ public class SystemTypes {
         HOSPITAL
     }
 }
-
 /*
 
 
