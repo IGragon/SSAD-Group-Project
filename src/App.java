@@ -18,11 +18,6 @@ public class App {
 
     // Simulation of our project implementation
         System system = new System();
-//        System system = new System(
-//                "jdbc:mysql://localhost:3306/ssad_group_project_db",
-//                "root",
-//                "root");
-
 
     // Create test components (supposedly parsed from DB)
         // Test user array for hospital with only one user

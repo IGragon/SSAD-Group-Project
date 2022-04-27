@@ -6,16 +6,14 @@ import utils.Coordinates;
 import utils.Data;
 import utils.Event;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 
 
 public class System implements Mediator {
 
     boolean UsingDB;
+    Connection connection;
     ComponentDatabase<User> usersDB = new ComponentDatabase<>();
     ComponentDatabase<Hospital> hospitalsDB = new ComponentDatabase<>();
     ComponentDatabase<Ambulance> ambulancesDB = new ComponentDatabase<>();
@@ -29,13 +27,14 @@ public class System implements Mediator {
     public System(String url, String user, String pass) throws Exception {
         UsingDB = true;
 
-        try(Connection connection = DriverManager.getConnection(url, user, pass)){
+        try {
+            connection = DriverManager.getConnection(url, user, pass);
             Class.forName("com.mysql.jdbc.Driver");
-            Statement statement = connection.createStatement();
-            ResultSet UsersData = statement.executeQuery("select * from users");
-            ResultSet HospitalsData = statement.executeQuery("select * from hospitals");
-            ResultSet AmbulancesData = statement.executeQuery("select * from ambulances");
-            ResultSet PoliceData = statement.executeQuery("select * from polices");
+            Statement DBstatement = connection.createStatement();
+            ResultSet UsersData = DBstatement.executeQuery("select * from users");
+            ResultSet HospitalsData = DBstatement.executeQuery("select * from hospitals");
+            ResultSet AmbulancesData = DBstatement.executeQuery("select * from ambulances");
+            ResultSet PoliceData = DBstatement.executeQuery("select * from polices");
 
 //          ----Some Parsing Algorithm----
 
@@ -115,22 +114,54 @@ public class System implements Mediator {
 
 
 /*
+     This function is used to execute database
+    commands with interrupted
+    connection (for not overloading DB).
+*/
+    private ResultSet ExecuteDB(String command) throws SQLException {
+        Statement DBstatement = connection.createStatement();
+        ResultSet result = DBstatement.executeQuery(command);
+        connection.close();
+        return result;
+    }
+
+/*
     Here are multiple constructor variants
     to add different type Components to the system
 */
-    public void addComponent(SystemTypes.user type, int id){
+    public void addComponent(SystemTypes.user type, int id) throws SQLException {
             usersDB.addComponent(id, new User());
+
+            if (UsingDB) {
+                ExecuteDB(String.format("INSERT INTO users(id, data) " +
+                                        "VALUES(%d, %s)", id, "some_user_data"));
+            }
     }
 
-    public void addComponent(SystemTypes.hospital type, int id, HashMap<Integer, Data> UserArr, Coordinates SelfCoord){
+    public void addComponent(SystemTypes.hospital type, int id, HashMap<Integer, Data> UserArr, Coordinates SelfCoord) throws SQLException {
             hospitalsDB.addComponent(id, new Hospital(UserArr, SelfCoord));
+
+            if (UsingDB) {
+                ExecuteDB(String.format("INSERT INTO hospitals(id, data) " +
+                                        "VALUES(%d, %s)", id, "some_hospital_data"));
+            }
     }
 
-    public void addComponent(SystemTypes.ambulance type, int id, int AttachedHospitalId){
+    public void addComponent(SystemTypes.ambulance type, int id, int AttachedHospitalId) throws SQLException {
             ambulancesDB.addComponent(id, new Ambulance(AttachedHospitalId));
+
+                if (UsingDB) {
+                    ExecuteDB(String.format("INSERT INTO ambulances(id, data) " +
+                                            "VALUES(%d, %s)", id, "some_ambulance_data"));
+                }
     }
 
-    public void addComponent(SystemTypes.police type, int id, Coordinates SelfCoord){
+    public void addComponent(SystemTypes.police type, int id, Coordinates SelfCoord) throws SQLException {
             policeStationsDB.addComponent(id, new PoliceStation(SelfCoord));
+
+            if (UsingDB) {
+                ExecuteDB(String.format("INSERT INTO polices(id, data) " +
+                                        "VALUES(%d, %s)", id, "some_police_data"));
+            }
     }
 }
