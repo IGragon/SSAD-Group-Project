@@ -4,21 +4,25 @@ import system.System;
 import utils.Coordinates;
 import utils.Data;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
-import static utils.Event.ACCIDENT;
-import static system.SystemTypes.user.USER;
-import static system.SystemTypes.hospital.HOSPITAL;
 import static system.SystemTypes.ambulance.AMBULANCE;
+import static system.SystemTypes.hospital.HOSPITAL;
 import static system.SystemTypes.police.POLICE;
+import static system.SystemTypes.user.USER;
+import static utils.Event.ACCIDENT;
 
 
 public class App {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
 
     // simulation of our project implementation
-        System system = new System();
+//        System system = new System();
+
+        System system = new System(
+                "jdbc:mysql://localhost:3306/ssad_group_project_db",
+                "root",
+                "root");
 
 
     // create test components (supposedly parsed from DB)
@@ -38,12 +42,6 @@ public class App {
         Data UserData = new Data();
 
         system.send(UnluckyUser, ACCIDENT, UserData);
-
-//        Thread EventTick = new Thread(() -> {
-//
-//        });
-//        EventTick.start();
-
 
     }
 }

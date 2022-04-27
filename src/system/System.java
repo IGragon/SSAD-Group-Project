@@ -6,35 +6,43 @@ import utils.Coordinates;
 import utils.Data;
 import utils.Event;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
 
 public class System implements Mediator {
+
+    boolean UsingDB;
     ComponentDatabase<User> usersDB = new ComponentDatabase<>();
     ComponentDatabase<Hospital> hospitalsDB = new ComponentDatabase<>();
     ComponentDatabase<Ambulance> ambulancesDB = new ComponentDatabase<>();
     ComponentDatabase<PoliceStation> policeStationsDB = new ComponentDatabase<>();
 
 
-
-    public System() throws SQLException, ClassNotFoundException {
-
-        String url = "jdbc:mysql://localhost:3306/ssad_group_project_db";
-        String user = "root";
-        String pass = "root";
+//   This constructor is used only
+//   when you want to connect to DB
+    public System(String url, String user, String pass) throws Exception {
+        UsingDB = true;
 
         try(Connection connection = DriverManager.getConnection(url, user, pass)){
             Class.forName("com.mysql.jdbc.Driver");
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from users");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from users");
             connection.close();
         }
 
         catch(Exception e){
-            throw e;
+            throw new Exception(e.getMessage());
         }
+    }
+
+//   This constructor is used in
+//   default case
+    public System() {
+        UsingDB = false;
     }
 
 
@@ -90,6 +98,9 @@ public class System implements Mediator {
         }
     }
 
+
+//    Here are multiple constructor variants
+//    to add different type Components to the system
     public void addComponent(SystemTypes.user type, int id){
             usersDB.addComponent(id, new User());
     }
